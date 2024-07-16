@@ -13,10 +13,21 @@ use Symfony\Component\Routing\Attribute\Route;
 class TaskController extends AbstractController
 {
     #[Route('/tasks', name: 'app_task_list')]
-    public function index(EntityManagerInterface $em): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
+        $done = $request->query->get('done');
+
+        $criteria = [];
+        if ($done === '0') {
+            $criteria['isDone'] = false;
+        } elseif ($done === '1') {
+            $criteria['isDone'] = true;
+        }
+
+        $tasks = empty($criteria) ? $em->getRepository(Task::class)->findAll() : $em->getRepository(Task::class)->findBy($criteria);
+
         return $this->render('task/index.html.twig', [
-            'tasks' => $em->getRepository(Task::class)->findAll(),
+            'tasks' => $tasks,
         ]);
     }
 
@@ -38,7 +49,7 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a bien été ajoutée.');
 
-            return $this->redirectToRoute('app_task_list');
+            return $this->redirectToRoute('app_task_list', ['done' => false]);
         }
 
         // En attendant de reporter le code des différentes vues et méthodes
@@ -88,7 +99,8 @@ class TaskController extends AbstractController
         $em->persist($task);
         $em->flush();
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $message = $task->isDone() ? 'faite' : 'à faire';
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme %s.', $task->getTitle(), $message));
 
         return $this->redirectToRoute('app_task_list');
     }
