@@ -42,6 +42,10 @@ class TaskVoter extends Voter
 
     private function canDelete(Task $task, User $user): bool
     {
+        if (in_array('ROLE_ADMIN', $user->getRoles()) && $task->getAuthor()->getUsername() === 'anonymous') {
+            return true;
+        }
+
         return $user === $task->getAuthor();
     }
 }
