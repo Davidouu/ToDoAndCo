@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TaskController extends AbstractController
 {
@@ -81,6 +82,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/delete', name: 'app_task_delete')]
+    #[IsGranted('delete', 'task')]
     public function delete(Task $task, EntityManagerInterface $em): Response
     {
         $em->remove($task);
