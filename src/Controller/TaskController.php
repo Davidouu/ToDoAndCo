@@ -41,8 +41,6 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $task->setCreatedAt(new \DateTime());
-            $task->setDone(false);
             $task->setAuthor($this->getUser());
 
             $em->persist($task);
