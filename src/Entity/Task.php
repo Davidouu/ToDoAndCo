@@ -30,6 +30,12 @@ class Task
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->isDone = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
