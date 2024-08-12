@@ -36,6 +36,10 @@ security:
   # Note: Only the *first* access control that matches will be used
   access_control:
     - { path: ^/users, roles: ROLE_ADMIN }
+    - { path: ^/tasks/create, roles: [ROLE_ADMIN, ROLE_USER] }
+    - { path: ^/tasks/\d+/edit, roles: [ROLE_ADMIN, ROLE_USER] }
+    - { path: ^/tasks/\d+/delete, roles: [ROLE_ADMIN, ROLE_USER] }
+    - { path: ^/tasks/\d+/toggle, roles: [ROLE_ADMIN, ROLE_USER] }
 
 when@test:
   security:
