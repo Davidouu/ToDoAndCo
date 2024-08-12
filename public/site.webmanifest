@@ -1,0 +1,21 @@
+{
+  "name": "To Do List App",
+  "short_name": "ToDoAndCo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "description": "To Do And Co is a simple to do list app",
+  "icons": [
+    {
+      "src": "/favicon-72x72.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
