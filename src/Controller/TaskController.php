@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TaskController extends AbstractController
 {
-    #[Route('/tasks', name: 'app_task_list')]
+    #[Route('/tasks', name: 'app_task_list', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
         $done = $request->query->get('done');
@@ -33,7 +33,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/tasks/create', name: 'app_task_new')]
+    #[Route('/tasks/create', name: 'app_task_new', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
         $task = new Task();
@@ -58,7 +58,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/tasks/{id}/edit', name: 'app_task_edit')]
+    #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['GET', 'POST'])]
     public function edit(Task $task, Request $request, EntityManagerInterface $em): Response
     {
         $editedTask = new Task();
@@ -84,7 +84,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/tasks/{id}/delete', name: 'app_task_delete')]
+    #[Route('/tasks/{id}/delete', name: 'app_task_delete', methods: ['POST'])]
     #[IsGranted('delete', 'task')]
     public function delete(Task $task, EntityManagerInterface $em): Response
     {
@@ -96,7 +96,7 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_task_list');
     }
 
-    #[Route('/tasks/{id}/toggle', name: 'app_task_toggle')]
+    #[Route('/tasks/{id}/toggle', name: 'app_task_toggle', methods: ['POST'])]
     public function toggle(Task $task, EntityManagerInterface $em): Response
     {
         $task->setDone(!$task->isDone());

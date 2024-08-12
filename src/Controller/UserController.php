@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/users', name: 'app_user_list')]
+    #[Route('/users', name: 'app_user_list', methods: ['GET'])]
     public function index(EntityManagerInterface $em): Response
     {
         return $this->render('user/index.html.twig', [
@@ -21,7 +21,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/users/create', name: 'app_user_new')]
+    #[Route('/users/create', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function create(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
     {
         $user = new User();
@@ -52,7 +52,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/users/{id}/edit', name: 'app_user_edit')]
+    #[Route('/users/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(User $user, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(UserType::class, $user);
