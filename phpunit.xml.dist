@@ -31,6 +31,7 @@
         <exclude>
             <directory suffix=".php">src/Repository</directory>
             <directory suffix=".php">src/DataFixtures</directory>
+            <directory suffix=".php">src/Controller/SecurityController.php</directory>
         </exclude>
     </coverage>
 
