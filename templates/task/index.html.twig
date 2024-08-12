@@ -1,9 +1,19 @@
 {% extends 'base.html.twig' %}
 
+{% block header_title %}
+    {% if done == '1' %}
+        <h1>Liste des tâches terminées</h1>
+    {% elseif done == '0' %}
+        <h1>Liste des tâches à faire</h1>
+    {% elseif done == null %}
+        <h1>Liste des tâches</h1>
+    {% endif %}
+{% endblock %}
+
 {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_task_new') }}" class="btn btn-info pull-right">Créer une tâche</a>
+    {% if app.user %}<a href="{{ path('app_task_new') }}" class="btn btn-info pull-right">Créer une tâche</a>{% endif %}
     <div class="row">
         {% for task in tasks %}
         <div class="col-sm-4 col-lg-4 col-md-4">
@@ -12,25 +22,41 @@
                     <h4 class="pull-right">
                         {% if task.isDone %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
                     </h4>
-                    <h4><a href="{{ path('app_task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
+                    {% if app.user %}
+                        <h4><a href="{{ path('app_task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
+                    {% else %}
+                        <h4>{{ task.title }}</h4>
+                    {% endif %}
                     <p>{{ task.content }}</p>
                 </div>
-                <div>
-                    <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">
-                        <button class="btn btn-success btn-sm pull-right">
-                            {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
-                        </button>
-                    </form>
-                    <form action="{{ path('app_task_delete', {'id' : task.id }) }}">
-                        <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
-                    </form>
-                </div>
+                {% if app.user %}
+                    <div>
+                        <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">
+                            <button class="btn btn-success btn-sm pull-right">
+                                {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                            </button>
+                        </form>
+                        <form action="{{ path('app_task_delete', {'id' : task.id }) }}">
+                            <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
+                        </form>
+                    </div>
+                {% endif %}
             </div>
         </div>
         {% else %}
-            <div class="alert alert-warning" role="alert">
-                Il n'y a pas encore de tâche enregistrée. <a href="{{ path('app_task_new') }}" class="btn btn-warning pull-right">Créer une tâche</a>
-            </div>
+            {% if app.user %}
+                <div class="alert alert-warning" role="alert">
+                    Il n'y a pas encore de tâche
+                    {% if done == '1' %}
+                         terminées.
+                    {% elseif done == '0' %}
+                         à faire.
+                    {% elseif done == null %}
+                         enregistrée.
+                    {% endif %}
+                    <a href="{{ path('app_task_new') }}" class="btn btn-warning pull-right">Créer une tâche</a>
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
