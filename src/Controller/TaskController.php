@@ -29,6 +29,7 @@ class TaskController extends AbstractController
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
+            'done'  => (string) $done,
         ]);
     }
 
@@ -60,11 +61,15 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/edit', name: 'app_task_edit')]
     public function edit(Task $task, Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(TaskType::class, $task);
+        $editedTask = new Task();
+        $form = $this->createForm(TaskType::class, $editedTask);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setTitle($editedTask->getTitle());
+            $task->setContent($editedTask->getContent());
+
             $em->persist($task);
             $em->flush();
 
