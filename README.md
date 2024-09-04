@@ -18,11 +18,11 @@ OpenClassrooms project, a todo list project to optimize and update
 To setup the environnement run :
 
 ```shell
-$ git clone https://github.com/Davidouu/bilemo.git
+$ git clone https://github.com/Davidouu/ToDoAndCo
 ```
 
 ```shell
-$ cd bilemo
+$ cd ToDoAndCo
 ```
 
 ```shell
